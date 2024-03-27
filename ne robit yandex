@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <set>
+
+using namespace std;
+
+int CalculateSimilarity(vector<string> vec1, vector<string> vec2) {
+    set<string> set1(vec1.begin(), vec1.end());
+    set<string> set2(vec2.begin(), vec2.end());
+
+    int repeats = 0;
+
+    for (const auto& str : set1) {
+        repeats += count(vec2.begin(), vec2.end(), str);
+    }
+
+    return repeats;
+}
+// SplitIntoWords разбивает строку text на слова и возвращает их в виде вектора
+// Слово - последовательность непробельных символов,
+// разделённых одним или более пробелов.
+vector<string> SplitIntoWords(string text) {
+    vector<string> words;
+    string word;
+    for (const char c : text) {
+        if (c == ' ') {
+            if (!word.empty()) {
+                words.push_back(word);
+                word.clear();
+            }
+        }
+        else {
+            word += c;
+        }
+    }
+    if (!word.empty()) {
+        words.push_back(word);
+    }
+    return words;
+}
+
+int main() {
+    string query, description;
+
+    getline(cin, query);
+    getline(cin, description);
+
+    cout << CalculateSimilarity(SplitIntoWords(query), SplitIntoWords(description)) << endl;
+}
